@@ -23,8 +23,7 @@ public class MecanumTeleOp extends LinearOpMode {
         // reverse the left side instead.
         // See the note about this earlier on this page.
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
