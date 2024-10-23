@@ -76,6 +76,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             leftBack.setPower(backLeftPower);
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
+            //ceci est un test
         }
     }
 }
