@@ -85,7 +85,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             if (gamepad1.a) {
                 MonteL.setPower(-0.2);
             } else {
-                MonteL.setPower(0);
+                MonteL.setPower(-0.01);
             }
         }
     }
