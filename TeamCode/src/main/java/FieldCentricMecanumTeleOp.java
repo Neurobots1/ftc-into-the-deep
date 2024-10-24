@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
@@ -17,18 +16,23 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightBack = hardwareMap.dcMotor.get("rightBack");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
+        DcMotor MonteL = hardwareMap.dcMotor.get("MonteL");
+        DcMotor MonteR = hardwareMap.dcMotor.get("MonteR");
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MonteL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MonteR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        // J'ai changer LeftFront pour rightback a voir si ca marche
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -76,6 +80,13 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             leftBack.setPower(backLeftPower);
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
+            //ceci est un test
+
+            if (gamepad1.a) {
+                MonteL.setPower(-0.2);
+            } else {
+                MonteL.setPower(-0.01);
+            }
         }
     }
 }
