@@ -82,18 +82,16 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test
 
-            if (gamepad1.a) {
-                MonteL.setPower(-0.2);
-            } else {
-                MonteL.setPower(-0.01);
+            MonteL.setTargetPosition(200);
+            MonteL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MonteR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            while (!(MonteL.getTargetPosition()==MonteR.getCurrentPosition())){
+                if (gamepad1.a){
+                    MonteR.setPower(-0.2);
+                    MonteL.setPower(0.2);
+                }
             }
-        }
-        if (gamepad1.a) {
-            MonteL.setPower(-1);
-            MonteR.setPower(1);
-        } else {
-            MonteL.setPower(-0.01);
-            MonteR.setPower(0.01);
         }
     }
 }
