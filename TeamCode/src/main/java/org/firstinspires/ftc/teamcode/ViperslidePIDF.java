@@ -36,13 +36,13 @@ public class ViperslidePIDF extends OpMode {
     @Override
     public void loop() {
         controller.setPID(p, i, d);
-        int slidePOS = slidemotorleft.getCurrentPosition();
+        int slidePOS = slidemotorright.getCurrentPosition();
         double pid = controller.calculate(slidePOS, target);
         double ff = Math.cos(Math.toRadians(target / tick_in_degree)) * f;
 
         double power = pid * ff;
 
-        slidemotorleft.setPower(power);
+        slidemotorright.setPower(power);
         telemetry.addData("pos", slidePOS);
         telemetry.addData("target", target);
         telemetry.update();
