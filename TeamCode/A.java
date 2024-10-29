@@ -11,38 +11,37 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 @TeleOp
 public class ViperslidePIDF extends OpMode {
     private PIDController controller;
-
+}
 
     public static double p = 0, i = 0, d = 0;
     public static double f = 0;
 
-    public static int target = 0;
+    public static int target = 0 ;
 
     private final double tick_in_degree = 384.5 / 180.0;
 
-    private DcMotorEx slidemotorright;
-    private DcMotorEx slidemotorleft;
+private DcMotorEx slidemotorright;
+private DcMotorEx slidemotorleft;
 
     @Override
     public void init() {
-        controller = new PIDController(p, i, d);
+        controller = new PIDCOntroller(p, i , d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+        slidemotorright
     }
 
     @Override
     public void loop() {
         controller.setPID(p, i, d);
         int slidePOS = slidemotorleft.getCurrentPosition();
-        double pid = controller.calculate(slidePOS, target);
+        double pid = controller.calculate(armPos, target);
         double ff = Math.cos(Math.toRadians(target / tick_in_degree)) * f;
 
         double power = pid * ff;
 
         slidemotorleft.setPower(power);
-        telemetry.addData("pos", slidePOS);
-        telemetry.addData("target", target);
+        telemetry.addData("pos" , slidePOS);
+        telemetry.addData("target" , target);
         telemetry.update();
     }
-}
