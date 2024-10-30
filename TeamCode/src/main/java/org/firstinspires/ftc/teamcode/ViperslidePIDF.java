@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -20,7 +19,7 @@ public class ViperslidePIDF extends OpMode {
 
     public static int target = 0;
 
-    private final double tick_in_degree = 384.5 / 180.0;
+    private final double ticks_in_degree = 384.5 / 180.0;
 
     private DcMotorEx slidemotorright;
     private DcMotorEx slidemotorleft;
@@ -36,14 +35,14 @@ public class ViperslidePIDF extends OpMode {
     @Override
     public void loop() {
         controller.setPID(p, i, d);
-        int slidePOS = slidemotorright.getCurrentPosition();
-        double pid = controller.calculate(slidePOS, target);
-        double ff = Math.cos(Math.toRadians(target / tick_in_degree)) * f;
+        int slidePos = slidemotorright.getCurrentPosition();
+        double pid = controller.calculate(slidePos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
-        double power = pid * ff;
+        double power = pid + ff;
 
         slidemotorright.setPower(power);
-        telemetry.addData("pos", slidePOS);
+        telemetry.addData("pos", slidePos);
         telemetry.addData("target", target);
         telemetry.update();
     }
