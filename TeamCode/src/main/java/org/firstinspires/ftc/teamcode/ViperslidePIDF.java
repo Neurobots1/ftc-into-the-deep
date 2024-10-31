@@ -14,10 +14,10 @@ public class ViperslidePIDF extends OpMode {
     private PIDController controller;
 
 
-    public static double p = 0, i = 0, d = 0;
-    public static double f = 0;
+    public static double p = 0.005, i = 0, d = 0.0001;
+    public static double f = -0.05;
 
-    public static int target = 0;
+    public static int target = -3000;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -42,6 +42,7 @@ public class ViperslidePIDF extends OpMode {
         double power = pid + ff;
 
         slidemotorright.setPower(power);
+        slidemotorleft.setPower(-power);
         telemetry.addData("pos", slidePos);
         telemetry.addData("target", target);
         telemetry.update();
