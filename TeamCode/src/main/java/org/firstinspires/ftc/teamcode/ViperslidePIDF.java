@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.controller.PController;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,7 +16,7 @@ public class ViperslidePIDF extends OpMode {
     public static double p = 0.005, i = 0, d = 0.0001;
     public static double f = -0.05;
 
-    public static int target = -3000;
+    public static int target = 0;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -30,6 +29,7 @@ public class ViperslidePIDF extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
     }
 
     @Override
