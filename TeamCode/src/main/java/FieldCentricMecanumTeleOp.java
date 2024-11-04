@@ -1,30 +1,51 @@
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
+@Config
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
+    private PIDController controller;
+    public static double p = 0.005, i = 0, d = 0.0001;
+    public static double f = -0.05;
+
+    public static int target = 0;
+
+    private final double ticks_in_degree = 384.5 / 180.0;
+
+    private DcMotorEx slidemotorright;
+    private DcMotorEx slidemotorleft;
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        controller = new PIDController(p, i, d);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
+
+
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor leftFront = hardwareMap.dcMotor.get("leftFront");
         DcMotor rightBack = hardwareMap.dcMotor.get("rightBack");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
-        DcMotor MonteL = hardwareMap.dcMotor.get("MonteL");
-        DcMotor MonteR = hardwareMap.dcMotor.get("MonteR");
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MonteL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MonteR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -80,18 +101,24 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             leftBack.setPower(backLeftPower);
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
-            //ceci est un test
+            //ceci est un test;
+                    telemetry.update();
 
-            MonteL.setTargetPosition(200);
-            MonteL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            MonteR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    if (gamepad1.a){
+                        controller.setPID(p, i, d);
+                        int slidePos = slidemotorright.getCurrentPosition();
+                        double pid = controller.calculate(slidePos, target);
+                        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
-            while (!(MonteL.getTargetPosition()==MonteR.getCurrentPosition())){
-                if (gamepad1.a){
-                    MonteR.setPower(-0.2);
-                    MonteL.setPower(0.2);
+                        double power = pid + ff;
+
+                        slidemotorright.setPower(power);
+                        slidemotorleft.setPower(-power);
+                        telemetry.addData("pos", slidePos);
+                        telemetry.addData("target", target);
+                        telemetry.update();
+                    }
+
                 }
             }
         }
-    }
-}
