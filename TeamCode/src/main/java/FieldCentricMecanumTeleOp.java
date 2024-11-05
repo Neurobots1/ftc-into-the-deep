@@ -19,7 +19,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     public static double p = 0.005, i = 0, d = 0.0001;
     public static double f = -0.05;
 
-    public int target;
+    public int target = -1200;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -103,9 +103,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             } else {
 
                 if (gamepad1.y) {
-                    target = -1250;
-                    //controller = new PIDController(p, i, d);
-                    //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+                    controller = new PIDController(p, i, d);
+                    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 
                     slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
