@@ -19,7 +19,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     public static double p = 0.005, i = 0, d = 0.0001;
     public static double f = -0.05;
 
-    public static int target = -1900;
+    public int target;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -103,9 +103,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             } else {
 
                 if (gamepad1.y) {
-                    int target = -1900;
-                    controller = new PIDController(p, i, d);
-                    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+                    target = -1250;
+                    //controller = new PIDController(p, i, d);
+                    //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 
                     slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
@@ -124,29 +124,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.addData("pos", slidePos);
                     telemetry.addData("target", target);
                     telemetry.update();
-                } else if (gamepad1.a) {
-                    int target = -500;
-
-                    controller = new PIDController(p, i, d);
-                    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 
-                    slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
-                    slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
-
-
-                    controller.setPID(p, i, d);
-                    int slidePos = slidemotorright.getCurrentPosition();
-                    double pid = controller.calculate(slidePos, target);
-                    double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-                    double power = pid + ff;
-
-                    slidemotorright.setPower(power);
-                    slidemotorleft.setPower(-power);
-                    telemetry.addData("pos", slidePos);
-                    telemetry.addData("target", target);
-                    telemetry.update();
 
 
                 }
