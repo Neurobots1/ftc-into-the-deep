@@ -14,11 +14,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 @Config
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
+
     private PIDController controller;
     public static double p = 0.005, i = 0, d = 0.0001;
     public static double f = -0.05;
 
-    public static int target = -1500;
+    public static int target = -700;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -27,12 +28,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
-        controller = new PIDController(p, i, d);
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
-        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
 
 
         // Declare our motors
@@ -105,6 +100,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.update();
 
                     if (gamepad1.a){
+                        controller = new PIDController(p, i, d);
+                        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+
+                        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+                        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
+
+
                         controller.setPID(p, i, d);
                         int slidePos = slidemotorright.getCurrentPosition();
                         double pid = controller.calculate(slidePos, target);
