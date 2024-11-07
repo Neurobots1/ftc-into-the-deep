@@ -15,18 +15,17 @@ import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 @Config
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
-    private Object ViperslidePIDF;
+    private PIDController controller;
+    public static double p = 0.005, i = 0, d = 0.0001;
+    public static double f = -0.05;
 
-    //private PIDController controller;
-    //public static double p = 0.005, i = 0, d = 0.0001;
-    //public static double f = -0.05;
+    public int target = -250;
 
-    //public int target = -1200;
+    private final double ticks_in_degree = 384.5 / 180.0;
 
-    //private final double ticks_in_degree = 384.5 / 180.0;
+    private DcMotorEx slidemotorright;
+    private DcMotorEx slidemotorleft;
 
-    //private DcMotorEx slidemotorright;
-    //private DcMotorEx slidemotorleft;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -100,33 +99,31 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
             //ceci est un test;
+
             telemetry.update();
 
-            if (gamepad1.y) {
+            if (gamepad1.y){
+
+                controller = new PIDController(p, i, d);
+                telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 
-                //controller = new PIDController(p, i, d);
-                //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+                slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+                slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
 
 
-                //slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
-                //slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
+                controller.setPID(p, i, d);
+                int slidePos = slidemotorright.getCurrentPosition();
+                double pid = controller.calculate(slidePos, target);
+                double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
-                //int target = -750;
+                double power = pid + ff;
 
-
-                //controller.setPID(p, i, d);
-                //int slidePos = slidemotorright.getCurrentPosition();
-                //double pid = controller.calculate(slidePos, target);
-                //double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-                //double power = pid + ff;
-
-                //slidemotorright.setPower(power);
-                //slidemotorleft.setPower(-power);
-                //telemetry.addData("pos", slidePos);
-                //telemetry.addData("target", target);
-                //telemetry.update();
+                slidemotorright.setPower(power);
+                slidemotorleft.setPower(-power);
+                telemetry.addData("pos", slidePos);
+                telemetry.addData("target", target);
+                telemetry.update();
 
 
             }
