@@ -16,7 +16,7 @@ public class ViperslidePIDF extends OpMode {
     public static double p = 0.005, i = 0, d = 0.0001;
     public static double f = -0.05;
 
-    public static int target = -750;
+    public static int target;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -48,6 +48,6 @@ public class ViperslidePIDF extends OpMode {
             telemetry.addData("pos", slidePos);
             telemetry.addData("target", target);
         }
-        telemetry.update();
+
     }
 }
