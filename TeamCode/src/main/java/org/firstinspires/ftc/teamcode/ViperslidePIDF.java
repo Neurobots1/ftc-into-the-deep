@@ -47,7 +47,7 @@ public class ViperslidePIDF extends OpMode {
             slidemotorleft.setPower(-power);
             telemetry.addData("pos", slidePos);
             telemetry.addData("target", target);
+            telemetry.update();
         }
-
     }
 }
