@@ -9,10 +9,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ViperslidePIDF;
+
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
+
+    public Object ViperslidePIDF;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -88,6 +94,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //ceci est un test;
 
             telemetry.update();
+            if (gamepad1.a) {
+                ViperslidePIDF;
+            }
         }
     }
 }
