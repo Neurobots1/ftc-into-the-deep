@@ -35,6 +35,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
         SlideR = hardwareMap.get(Servo.class, "SlideR");
         SliderL = hardwareMap.get(Servo.class, "SliderL");
+        SlideR.setDirection(Servo.Direction.REVERSE);
 
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
