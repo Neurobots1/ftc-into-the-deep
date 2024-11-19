@@ -18,6 +18,9 @@ import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
+    private Servo SlideR;
+    private Servo SliderL;
+
     public Object ViperslidePIDF;
 
     @Override
@@ -30,6 +33,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightBack = hardwareMap.dcMotor.get("rightBack");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
+        SlideR = hardwareMap.get(Servo.class, "SlideR");
+        SliderL = hardwareMap.get(Servo.class, "SliderL");
+
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -93,10 +99,21 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test;
 
-            telemetry.update();
-            if (gamepad1.a) {
-                ViperslidePIDF;
+            if (gamepad1.dpad_down) {
+                SlideR.setPosition(1);
+                SliderL.setPosition(1);
+                telemetry.update();
+            } else {
+                if (gamepad1.dpad_up) {
+                    SlideR.setPosition(0);
+                    SliderL.setPosition(0);
+                    telemetry.update();
+                }
+
+
             }
         }
     }
 }
+
+
