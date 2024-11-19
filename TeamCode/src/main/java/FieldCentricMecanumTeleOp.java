@@ -20,6 +20,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
     private Servo SlideR;
     private Servo SliderL;
+    private Servo AlongeR;
 
     public Object ViperslidePIDF;
 
@@ -35,7 +36,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
         SlideR = hardwareMap.get(Servo.class, "SlideR");
         SliderL = hardwareMap.get(Servo.class, "SliderL");
+        AlongeR = hardwareMap.get(Servo.class, "AlongeR");
         SlideR.setDirection(Servo.Direction.REVERSE);
+        AlongeR.scaleRange(0,90);
 
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -112,6 +115,13 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 }
 
 
+            }
+            if (gamepad1.dpad_left){
+                AlongeR.setPosition(0.8);
+            } else {
+                if (gamepad1.dpad_right) {
+                    AlongeR.setPosition(0.2);
+                }
             }
         }
     }
