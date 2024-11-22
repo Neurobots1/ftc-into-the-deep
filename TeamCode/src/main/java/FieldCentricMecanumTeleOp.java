@@ -21,11 +21,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo SlideR;
     private Servo SliderL;
     private Servo AlongeR;
-
-    public Object ViperslidePIDF;
+    private Servo pince;
+    private Servo bucket;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
 
         // Declare our motors
@@ -34,12 +34,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightBack = hardwareMap.dcMotor.get("rightBack");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
+
+        //servo
         SlideR = hardwareMap.get(Servo.class, "SlideR");
         SliderL = hardwareMap.get(Servo.class, "SliderL");
         AlongeR = hardwareMap.get(Servo.class, "AlongeR");
+        pince = hardwareMap.get(Servo.class, "pince");
+        bucket = hardwareMap.get(Servo.class,"bucket");
         SlideR.setDirection(Servo.Direction.REVERSE);
-        AlongeR.scaleRange(0,90);
-
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -50,7 +52,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         // J'ai changer LeftFront pour rightback a voir si ca marche
 
@@ -58,7 +60,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         IMU imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
@@ -103,12 +105,12 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test;
 
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_up) {
                 SlideR.setPosition(1);
                 SliderL.setPosition(1);
                 telemetry.update();
             } else {
-                if (gamepad1.dpad_up) {
+                if (gamepad1.dpad_down) {
                     SlideR.setPosition(0);
                     SliderL.setPosition(0);
                     telemetry.update();
@@ -116,15 +118,40 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
 
             }
-            if (gamepad1.dpad_left){
-                AlongeR.setPosition(0.8);
+            if (gamepad1.a) {
+                pince.setPosition(0.3);
+                telemetry.update();
             } else {
-                if (gamepad1.dpad_right) {
-                    AlongeR.setPosition(0.2);
+                if (gamepad1.b) {
+                    pince.setPosition(0.6);
+                    telemetry.update();
                 }
             }
+            if (gamepad1.dpad_left) {
+                AlongeR.setPosition(1);
+                telemetry.update();
+            } else {
+                if (gamepad1.dpad_right) {
+                    AlongeR.setPosition(0);
+                    telemetry.update();
+                }
+            }
+            if (gamepad1.left_bumper) {
+                bucket.setPosition(1);
+                telemetry.update();
+            } else {
+                if (gamepad1.right_bumper) {
+                    bucket.setPosition(0);
+                    telemetry.update();
+                }
+            }
+
+
+
+
+
+        }
         }
     }
-}
 
 
