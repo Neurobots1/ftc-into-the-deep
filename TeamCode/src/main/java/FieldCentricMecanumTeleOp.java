@@ -111,8 +111,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 telemetry.update();
             } else {
                 if (gamepad1.dpad_down) {
-                    SlideR.setPosition(0);
-                    SliderL.setPosition(0);
+                    SlideR.setPosition(0.05);
+                    SliderL.setPosition(0.05);
                     telemetry.update();
                 }
 
@@ -141,7 +141,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 telemetry.update();
             } else {
                 if (gamepad1.right_bumper) {
-                    bucket.setPosition(0);
+                    bucket.setPosition(0.1);
                     telemetry.update();
                 }
             }
