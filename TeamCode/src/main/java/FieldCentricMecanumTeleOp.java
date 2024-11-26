@@ -24,6 +24,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo pince;
     private Servo bucket;
 
+
     @Override
     public void runOpMode() {
 
@@ -128,11 +129,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 }
             }
             if (gamepad1.dpad_left) {
-                AlongeR.setPosition(1);
+                AlongeR.setPosition(0.6);
                 telemetry.update();
             } else {
                 if (gamepad1.dpad_right) {
-                    AlongeR.setPosition(0);
+                    AlongeR.setPosition(0.4);
                     telemetry.update();
                 }
             }
@@ -145,9 +146,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.update();
                 }
             }
-
-
-
 
 
         }
