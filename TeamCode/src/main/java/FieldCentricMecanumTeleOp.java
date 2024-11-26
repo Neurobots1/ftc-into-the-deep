@@ -139,11 +139,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
 
             }
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 pince.setPosition(0.3);
                 telemetry.update();
             } else {
-                if (gamepad1.b) {
+                if (gamepad2.b) {
                     pince.setPosition(0.6);
                     telemetry.update();
                 }
@@ -195,7 +195,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 telemetry.addData("target", target);
                 telemetry.update();
 
-                if (gamepad1.y){
+                if (gamepad1.a){
                     target = -50;
                 }
 
