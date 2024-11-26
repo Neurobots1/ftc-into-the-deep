@@ -18,6 +18,21 @@ import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
+
+    private PIDController controller;
+
+
+    public static double p = 0.005, i = 0, d = 0.0001;
+    public static double f = -0.1;
+
+    public static int target = 0;
+
+    private final double ticks_in_degree = 384.5 / 180.0;
+
+    private DcMotorEx slidemotorright;
+    private DcMotorEx slidemotorleft;
+
+
     private Servo SlideR;
     private Servo SliderL;
     private Servo AlongeR;
@@ -27,6 +42,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        controller = new PIDController(p, i, d);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
+        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
 
 
         // Declare our motors
@@ -146,6 +166,49 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.update();
                 }
             }
+            loop(); {
+            if (gamepad1.y) {
+                target = -2000;
+                controller.setPID(p, i, d);
+                int slidePos = slidemotorright.getCurrentPosition();
+                double pid = controller.calculate(slidePos, target);
+                double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+                double power = pid + ff;
+
+                slidemotorright.setPower(power);
+                slidemotorleft.setPower(-power);
+                telemetry.addData("pos", slidePos);
+                telemetry.addData("target", target);
+                telemetry.update();
+            } else {
+                controller.setPID(p, i, d);
+                int slidePos = slidemotorright.getCurrentPosition();
+                double pid = controller.calculate(slidePos, target);
+                double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+                double power = pid + ff;
+
+                slidemotorright.setPower(power);
+                slidemotorleft.setPower(-power);
+                telemetry.addData("pos", slidePos);
+                telemetry.addData("target", target);
+                telemetry.update();
+
+                if (gamepad1.y){
+                    target = -50;
+                }
+
+                if (gamepad1.x){
+                    target = -900;
+                }
+
+                if (gamepad1.b){
+                    target = -1400;
+                }
+                }
+            }
+
 
 
         }
