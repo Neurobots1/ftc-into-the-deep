@@ -36,9 +36,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo SlideR;
     private Servo SliderL;
     private Servo AlongeR;
+    private Servo AllongeL;
     private Servo pince;
     private Servo bucket;
-
+    private Servo pinceArriere;
 
     @Override
     public void runOpMode() {
@@ -62,7 +63,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         AlongeR = hardwareMap.get(Servo.class, "AlongeR");
         pince = hardwareMap.get(Servo.class, "pince");
         bucket = hardwareMap.get(Servo.class,"bucket");
+        AllongeL = hardwareMap.get(Servo.class, "AllongeL");
+        pinceArriere = hardwareMap.get(Servo.class, "pinceArriere");
         SlideR.setDirection(Servo.Direction.REVERSE);
+        AllongeL.setDirection(Servo.Direction.REVERSE);
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -75,7 +79,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         // See the note about this earlier on this page.
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        // J'ai changer LeftFront pour rightback a voir si ca marche
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -83,8 +86,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.resetYaw();
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
+
 
         waitForStart();
 
@@ -127,44 +132,48 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //ceci est un test;
 
             if (gamepad1.dpad_up) {
-                SlideR.setPosition(1);
-                SliderL.setPosition(1);
+                SlideR.setPosition(0.05);
+                SliderL.setPosition(0.05);
                 telemetry.update();
             } else {
-                if (gamepad1.dpad_down) {
-                    SlideR.setPosition(0.05);
-                    SliderL.setPosition(0.05);
+                if (gamepad1.dpad_up) {
+                    SlideR.setPosition(1);
+                    SliderL.setPosition(1);
                     telemetry.update();
                 }
 
 
             }
-            if (gamepad2.a) {
+            if (gamepad2.b) {
                 pince.setPosition(0.3);
                 telemetry.update();
             } else {
-                if (gamepad2.b) {
+                if (gamepad1.a) {
                     pince.setPosition(0.6);
                     telemetry.update();
                 }
             }
             if (gamepad1.dpad_left) {
-                AlongeR.setPosition(0.6);
+                AlongeR.setPosition(1);
+                AllongeL.setPosition(1);
                 telemetry.update();
             } else {
                 if (gamepad1.dpad_right) {
-                    AlongeR.setPosition(0.4);
+                    AlongeR.setPosition(0.35);
+                    AllongeL.setPosition(0.3);
                     telemetry.update();
                 }
             }
             if (gamepad1.left_bumper) {
-                bucket.setPosition(1);
-                telemetry.update();
+                bucket.setPosition(0.1);
             } else {
-                if (gamepad1.right_bumper) {
-                    bucket.setPosition(0.1);
-                    telemetry.update();
-                }
+                    bucket.setPosition(1);
+            }
+            if (gamepad2.y){
+                pinceArriere.setPosition(1);
+            } else if (gamepad2.x) {
+                pinceArriere.setPosition(0);
+
             }
             loop(); {
             if (gamepad1.y) {
@@ -201,6 +210,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
                 if (gamepad1.x){
                     target = -900;
+                    pinceArriere.setPosition(1);
                 }
 
                 if (gamepad1.b){
