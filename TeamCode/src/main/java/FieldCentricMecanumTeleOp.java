@@ -40,6 +40,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo pince;
     private Servo bucket;
     private Servo pinceArriere;
+    private Servo poignet;
 
     @Override
     public void runOpMode() {
@@ -65,6 +66,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         bucket = hardwareMap.get(Servo.class,"bucket");
         AllongeL = hardwareMap.get(Servo.class, "AllongeL");
         pinceArriere = hardwareMap.get(Servo.class, "pinceArriere");
+        poignet = hardwareMap.get(Servo.class, "poignet");
         SlideR.setDirection(Servo.Direction.REVERSE);
         AllongeL.setDirection(Servo.Direction.REVERSE);
 
@@ -92,8 +94,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
 
         waitForStart();
-
-        if (isStopRequested()) return;
 
         while (opModeIsActive()) {
 
@@ -136,7 +136,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 SliderL.setPosition(0.05);
                 telemetry.update();
             } else {
-                if (gamepad1.dpad_up) {
+                if (gamepad1.dpad_down) {
                     SlideR.setPosition(1);
                     SliderL.setPosition(1);
                     telemetry.update();
@@ -148,7 +148,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 pince.setPosition(0.3);
                 telemetry.update();
             } else {
-                if (gamepad1.a) {
+                if (gamepad2.a) {
                     pince.setPosition(0.6);
                     telemetry.update();
                 }
@@ -175,9 +175,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 pinceArriere.setPosition(0);
 
             }
+            if (gamepad2.left_bumper) {
+                poignet.setPosition(1);
+            } else if (gamepad2.right_bumper) {
+                poignet.setPosition(0);
+            }
             loop(); {
             if (gamepad1.y) {
-                target = -2000;
+                target = -2070;
                 controller.setPID(p, i, d);
                 int slidePos = slidemotorright.getCurrentPosition();
                 double pid = controller.calculate(slidePos, target);
@@ -208,12 +213,15 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     target = -50;
                 }
 
-                if (gamepad1.x){
+                if (gamepad1.b){
+                    SlideR.setPosition(0.5);
+                    SliderL.setPosition(0.5);
+                    sleep(1000);
                     target = -900;
                     pinceArriere.setPosition(1);
                 }
 
-                if (gamepad1.b){
+                if (gamepad1.x){
                     target = -1400;
                 }
                 }
