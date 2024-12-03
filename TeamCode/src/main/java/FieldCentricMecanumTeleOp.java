@@ -131,14 +131,21 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test;
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_down) {
+                pince.setPosition(0.4);
+                sleep(200);
                 SlideR.setPosition(0.05);
                 SliderL.setPosition(0.05);
                 telemetry.update();
             } else {
-                if (gamepad1.dpad_down) {
+                if (gamepad1.dpad_up) {
                     SlideR.setPosition(1);
                     SliderL.setPosition(1);
+                    sleep(200);
+                    pince.setPosition(0.6);
+                    sleep(200);
+                    SliderL.setPosition(0.6);
+                    SlideR.setPosition(0.6);
                     telemetry.update();
                 }
 
@@ -146,6 +153,12 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             }
             if (gamepad2.b) {
                 pince.setPosition(0.3);
+                sleep(400);
+                SlideR.setPosition(0.3);
+                SliderL.setPosition(0.3);
+                sleep(100);
+                AllongeL.setPosition(0.35);
+                AlongeR.setPosition(0.3);
                 telemetry.update();
             } else {
                 if (gamepad2.a) {
@@ -159,6 +172,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 telemetry.update();
             } else {
                 if (gamepad1.dpad_right) {
+                    SliderL.setPosition(0.3);
+                    SlideR.setPosition(0.3);
+                    sleep(200);
                     AlongeR.setPosition(0.35);
                     AllongeL.setPosition(0.3);
                     telemetry.update();
@@ -216,7 +232,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 if (gamepad1.b){
                     SlideR.setPosition(0.5);
                     SliderL.setPosition(0.5);
-                    sleep(1000);
+                    sleep(500);
                     target = -900;
                     pinceArriere.setPosition(1);
                 }
