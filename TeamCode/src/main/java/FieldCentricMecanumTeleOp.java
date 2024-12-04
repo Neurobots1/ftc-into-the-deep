@@ -58,12 +58,17 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
 
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         //servo
         SlideR = hardwareMap.get(Servo.class, "SlideR");
         SliderL = hardwareMap.get(Servo.class, "SliderL");
         AlongeR = hardwareMap.get(Servo.class, "AlongeR");
         pince = hardwareMap.get(Servo.class, "pince");
-        bucket = hardwareMap.get(Servo.class,"bucket");
+        bucket = hardwareMap.get(Servo.class, "bucket");
         AllongeL = hardwareMap.get(Servo.class, "AllongeL");
         pinceArriere = hardwareMap.get(Servo.class, "pinceArriere");
         poignet = hardwareMap.get(Servo.class, "poignet");
@@ -131,26 +136,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test;
 
-            if (gamepad1.dpad_down) {
-                pince.setPosition(0.4);
-                sleep(200);
-                SlideR.setPosition(0.05);
-                SliderL.setPosition(0.05);
-                telemetry.update();
-            } else {
-                if (gamepad1.dpad_up) {
-                    SlideR.setPosition(1);
-                    SliderL.setPosition(1);
-                    sleep(200);
-                    pince.setPosition(0.6);
-                    sleep(200);
-                    SliderL.setPosition(0.6);
-                    SlideR.setPosition(0.6);
-                    telemetry.update();
-                }
-
-
-            }
             if (gamepad2.b) {
                 pince.setPosition(0.3);
                 sleep(400);
@@ -160,18 +145,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 AllongeL.setPosition(0.35);
                 AlongeR.setPosition(0.3);
                 telemetry.update();
-            } else {
-                if (gamepad2.a) {
-                    pince.setPosition(0.6);
-                    telemetry.update();
-                }
             }
-            if (gamepad1.dpad_left) {
+
+            if (gamepad1.dpad_right) {
                 AlongeR.setPosition(1);
                 AllongeL.setPosition(1);
                 telemetry.update();
             } else {
-                if (gamepad1.dpad_right) {
+                if (gamepad1.dpad_left) {
                     SliderL.setPosition(0.3);
                     SlideR.setPosition(0.3);
                     sleep(200);
@@ -180,12 +161,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.update();
                 }
             }
-            if (gamepad1.left_bumper) {
-                bucket.setPosition(0.1);
-            } else {
-                    bucket.setPosition(1);
-            }
-            if (gamepad2.y){
+            if (gamepad2.y) {
                 pinceArriere.setPosition(1);
             } else if (gamepad2.x) {
                 pinceArriere.setPosition(0);
@@ -196,57 +172,92 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             } else if (gamepad2.right_bumper) {
                 poignet.setPosition(0);
             }
-            loop(); {
-            if (gamepad1.y) {
-                target = -2070;
-                controller.setPID(p, i, d);
-                int slidePos = slidemotorright.getCurrentPosition();
-                double pid = controller.calculate(slidePos, target);
-                double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+            loop();
+            {
+                if (gamepad1.y) {
+                    target = -2070;
+                    controller.setPID(p, i, d);
+                    int slidePos = slidemotorright.getCurrentPosition();
+                    double pid = controller.calculate(slidePos, target);
+                    double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
-                double power = pid + ff;
+                    double power = pid + ff;
 
-                slidemotorright.setPower(power);
-                slidemotorleft.setPower(-power);
-                telemetry.addData("pos", slidePos);
-                telemetry.addData("target", target);
-                telemetry.update();
-            } else {
-                controller.setPID(p, i, d);
-                int slidePos = slidemotorright.getCurrentPosition();
-                double pid = controller.calculate(slidePos, target);
-                double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+                    slidemotorright.setPower(power);
+                    slidemotorleft.setPower(-power);
+                    telemetry.addData("pos", slidePos);
+                    telemetry.addData("target", target);
+                    telemetry.update();
+                } else {
+                    controller.setPID(p, i, d);
+                    int slidePos = slidemotorright.getCurrentPosition();
+                    double pid = controller.calculate(slidePos, target);
+                    double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
-                double power = pid + ff;
+                    double power = pid + ff;
 
-                slidemotorright.setPower(power);
-                slidemotorleft.setPower(-power);
-                telemetry.addData("pos", slidePos);
-                telemetry.addData("target", target);
-                telemetry.update();
+                    slidemotorright.setPower(power);
+                    slidemotorleft.setPower(-power);
+                    telemetry.addData("pos", slidePos);
+                    telemetry.addData("target", target);
+                    telemetry.update();
 
-                if (gamepad1.a){
-                    target = -50;
+                    if (gamepad1.a) {
+                        target = -50;
+                    }
+
+                    if (gamepad1.b) {
+                        SlideR.setPosition(0.5);
+                        SliderL.setPosition(0.5);
+                        sleep(500);
+                        target = -900;
+                        pinceArriere.setPosition(1);
+                    }
+
+                    if (gamepad1.x) {
+                        target = -1400;
+                    }
                 }
 
-                if (gamepad1.b){
-                    SlideR.setPosition(0.5);
-                    SliderL.setPosition(0.5);
-                    sleep(500);
-                    target = -900;
-                    pinceArriere.setPosition(1);
+                if (gamepad1.dpad_down) {
+                    pince.setPosition(0.4);
+                    sleep(200);
+                    SlideR.setPosition(0.05);
+                    SliderL.setPosition(0.05);
+                    telemetry.update();
+                } else {
+                    if (gamepad1.dpad_up) {
+                        if (slidemotorright.getCurrentPosition() < -60) {
+                            SlideR.setPosition(1);
+                            SliderL.setPosition(1);
+                            sleep(200);
+                            pince.setPosition(0.6);
+                            sleep(200);
+                            SliderL.setPosition(0.6);
+                            SlideR.setPosition(0.6);
+                            telemetry.update();
+                        } else {
+                            SliderL.setPosition(0.6);
+                            SlideR.setPosition(0.6);
+                        }
+
+
+                    }
+                }
+                if (slidemotorright.getCurrentPosition() < -1950) {
+                if (gamepad1.left_bumper) {
+                        bucket.setPosition(0.1);
+                    } else {
+                        bucket.setPosition(1);
+                    }
+                } else {
+                    bucket.setPosition(1);
                 }
 
-                if (gamepad1.x){
-                    target = -1400;
-                }
-                }
+
             }
-
-
-
-        }
         }
     }
+}
 
 
