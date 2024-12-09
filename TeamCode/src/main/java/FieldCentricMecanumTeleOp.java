@@ -252,6 +252,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 } else {
                     bucket.setPosition(1);
                 }
+                if (gamepad1.start){
+                    slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                }
 
 
             }
