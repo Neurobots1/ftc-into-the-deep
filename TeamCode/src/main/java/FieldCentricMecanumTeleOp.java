@@ -139,8 +139,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             if (gamepad2.b) {
                 pince.setPosition(0.3);
                 sleep(400);
-                SlideR.setPosition(0.3);
-                SliderL.setPosition(0.3);
+                SlideR.setPosition(0.35);
+                SliderL.setPosition(0.35);
                 sleep(100);
                 AllongeL.setPosition(0.35);
                 AlongeR.setPosition(0.3);
@@ -207,9 +207,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     }
 
                     if (gamepad1.b) {
-                        SlideR.setPosition(0.5);
-                        SliderL.setPosition(0.5);
-                        sleep(500);
                         target = -900;
                         pinceArriere.setPosition(1);
                     }
@@ -220,21 +217,23 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 }
 
                 if (gamepad1.dpad_down) {
-                    pince.setPosition(0.4);
+                    pince.setPosition(0.6);
                     sleep(200);
                     SlideR.setPosition(0.05);
                     SliderL.setPosition(0.05);
                     telemetry.update();
                 } else {
                     if (gamepad1.dpad_up) {
-                        if (slidemotorright.getCurrentPosition() < -60) {
+                        if (slidemotorright.getCurrentPosition() > -200) {
+                            poignet.setPosition(1);
+                            sleep(300);
                             SlideR.setPosition(1);
                             SliderL.setPosition(1);
-                            sleep(200);
+                            sleep(800);
                             pince.setPosition(0.6);
-                            sleep(200);
-                            SliderL.setPosition(0.6);
+                            sleep(1000);
                             SlideR.setPosition(0.6);
+                            SliderL.setPosition(0.6);
                             telemetry.update();
                         } else {
                             SliderL.setPosition(0.6);
