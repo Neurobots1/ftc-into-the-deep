@@ -1,5 +1,6 @@
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.message.redux.ReceiveGamepadState;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -17,7 +19,8 @@ import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
-
+Gamepad currentGamepad1 = new Gamepad();
+Gamepad previousGamepad1 = new Gamepad();
 
     private PIDController controller;
 
@@ -41,6 +44,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo bucket;
     private Servo pinceArriere;
     private Servo poignet;
+    boolean intakeToggle = true;
 
     @Override
     public void runOpMode() {
@@ -172,6 +176,16 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             } else if (gamepad2.right_bumper) {
                 poignet.setPosition(0);
             }
+
+            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper){
+                intakeToggle = !intakeToggle;
+            }
+            if (intakeToggle){
+                pinceArriere.setPosition(0);
+            } else{
+                pinceArriere.setPosition(1);
+            }
+
             loop();
             {
                 if (gamepad1.y) {
