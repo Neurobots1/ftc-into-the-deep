@@ -12,16 +12,12 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
-Gamepad currentGamepad1 = new Gamepad();
-Gamepad previousGamepad1 = new Gamepad();
-
     private PIDController controller;
 
 
@@ -44,10 +40,19 @@ Gamepad previousGamepad1 = new Gamepad();
     private Servo bucket;
     private Servo pinceArriere;
     private Servo poignet;
-    boolean intakeToggle = true;
 
     @Override
     public void runOpMode() {
+        Gamepad currentGamepad1 = new Gamepad();
+        Gamepad currentGamepad2 = new Gamepad();
+
+        Gamepad previousGamepad1 = new Gamepad();
+        Gamepad previousGamepad2 = new Gamepad();
+
+
+        boolean intakeToggle = false;
+        boolean poignettoggle = false;
+
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -165,15 +170,13 @@ Gamepad previousGamepad1 = new Gamepad();
                     telemetry.update();
                 }
             }
-            if (gamepad2.y) {
-                pinceArriere.setPosition(1);
-            } else if (gamepad2.x) {
-                pinceArriere.setPosition(0);
 
+            if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper){
+                poignettoggle = !poignettoggle;
             }
-            if (gamepad2.left_bumper) {
+            if (poignettoggle){
                 poignet.setPosition(1);
-            } else if (gamepad2.right_bumper) {
+            } else{
                 poignet.setPosition(0);
             }
 
@@ -185,6 +188,8 @@ Gamepad previousGamepad1 = new Gamepad();
             } else{
                 pinceArriere.setPosition(1);
             }
+            previousGamepad1.copy(currentGamepad1);
+            currentGamepad1.copy(gamepad1);
 
             loop();
             {
