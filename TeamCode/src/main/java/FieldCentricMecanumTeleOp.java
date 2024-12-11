@@ -50,8 +50,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Gamepad previousGamepad2 = new Gamepad();
 
 
-        boolean intakeToggle = false;
-        boolean poignettoggle = false;
+        boolean intakeToggle = true;
+        boolean poignettoggle = true;
 
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -190,6 +190,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             }
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
+            previousGamepad2.copy(currentGamepad2);
+            currentGamepad2.copy(gamepad2);
 
             loop();
             {
@@ -271,9 +273,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 } else {
                     bucket.setPosition(1);
                 }
-                if (gamepad1.start){
-                    slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                }
+                //if (gamepad1.start){
+                    //slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+               // }
 
 
             }
