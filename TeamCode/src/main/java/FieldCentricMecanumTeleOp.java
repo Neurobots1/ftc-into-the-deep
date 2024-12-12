@@ -184,13 +184,15 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 poignet.setPosition(0);
             }
 
-            if(gamepad1.right_trigger<0.1){
-                gamepad1.right_trigger=1;
+            if(gamepad1.right_trigger>0.1){
+                pince.setPosition(0.3);
+            }else{
+                pince.setPosition(0.6);
             }
 
-            if (currentGamepad1.right_trigger && !previousGamepad1.right_trigger){
-                pinceToggle = !pinceToggle;
-            }
+           // if (currentGamepad1.right_trigger && !previousGamepad1.right_trigger){
+             //   pinceToggle = !pinceToggle;
+            //}
 
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper){
                 intakeToggle = !intakeToggle;
