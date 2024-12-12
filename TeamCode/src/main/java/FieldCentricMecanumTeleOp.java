@@ -1,8 +1,9 @@
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.message.redux.ReceiveGamepadState;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.command.button.Button;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,12 +14,12 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.ViperslidePIDF;
 
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private PIDController controller;
+
 
 
     public static double p = 0.005, i = 0, d = 0.0001;
@@ -50,8 +51,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Gamepad previousGamepad2 = new Gamepad();
 
 
+
         boolean intakeToggle = true;
         boolean poignettoggle = true;
+        boolean pinceToggle = false;
 
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -145,7 +148,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightBack.setPower(backRightPower);
             //ceci est un test;
 
-            if (gamepad2.b) {
+            if (pinceToggle) {
                 pince.setPosition(0.3);
                 sleep(400);
                 SlideR.setPosition(0.35);
@@ -154,6 +157,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 AllongeL.setPosition(0.35);
                 AlongeR.setPosition(0.3);
                 telemetry.update();
+            }else{
+                pince.setPosition(0.6);
             }
 
             if (gamepad1.dpad_right) {
@@ -171,13 +176,21 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 }
             }
 
-            if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper){
+            if (currentGamepad2.left_bumper && ! previousGamepad2.left_bumper){
                 poignettoggle = !poignettoggle;
             }
             if (poignettoggle){
                 poignet.setPosition(1);
             } else{
                 poignet.setPosition(0);
+            }
+
+            if(gamepad1.right_trigger<0.1){
+                gamepad1.right_trigger=1;
+            }
+
+            if (currentGamepad1.right_trigger && !previousGamepad1.right_trigger){
+                pinceToggle = !pinceToggle;
             }
 
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper){
@@ -190,6 +203,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             }
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
+
             previousGamepad2.copy(currentGamepad2);
             currentGamepad2.copy(gamepad2);
 
