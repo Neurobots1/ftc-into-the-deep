@@ -51,7 +51,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Gamepad previousGamepad2 = new Gamepad();
 
 
-
         boolean intakeToggle = true;
         boolean poignettoggle = true;
         boolean pinceToggle = false;
