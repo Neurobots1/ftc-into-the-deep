@@ -222,10 +222,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                         pinceArriere.setPosition(1);
                     }
 
-                    if (gamepad1.y){
-                        target = -2070;
-                    }
-
                     if (gamepad1.x) {
                         target = -1400;
                     }
