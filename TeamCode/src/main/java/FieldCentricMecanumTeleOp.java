@@ -152,9 +152,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 sleep(400);
                 SlideR.setPosition(0.35);
                 SliderL.setPosition(0.35);
-                sleep(100);
-                AllongeL.setPosition(0.35);
-                AlongeR.setPosition(0.3);
                 telemetry.update();
             }else{
                 pince.setPosition(0.6);
@@ -197,26 +194,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
 
-            previousGamepad2.copy(currentGamepad2);
-            currentGamepad2.copy(gamepad2);
-
             loop();
             {
-                if (gamepad1.y) {
-                    target = -2070;
-                    controller.setPID(p, i, d);
-                    int slidePos = slidemotorright.getCurrentPosition();
-                    double pid = controller.calculate(slidePos, target);
-                    double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-                    double power = pid + ff;
-
-                    slidemotorright.setPower(power);
-                    slidemotorleft.setPower(-power);
-                    telemetry.addData("pos", slidePos);
-                    telemetry.addData("target", target);
-                    telemetry.update();
-                } else {
                     controller.setPID(p, i, d);
                     int slidePos = slidemotorright.getCurrentPosition();
                     double pid = controller.calculate(slidePos, target);
@@ -234,6 +213,10 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                         target = -50;
                     }
 
+                    if (gamepad1.y){
+                        target = -2070;
+                    }
+
                     if (gamepad1.b) {
                         target = -900;
                         pinceArriere.setPosition(1);
@@ -242,13 +225,13 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     if (gamepad1.x) {
                         target = -1400;
                     }
-                }
+
 
                 if (gamepad1.dpad_down) {
                     pince.setPosition(0.6);
                     sleep(200);
-                    SlideR.setPosition(0.05);
-                    SliderL.setPosition(0.05);
+                    SlideR.setPosition(0.045);
+                    SliderL.setPosition(0.045);
                     telemetry.update();
                 } else {
                     if (gamepad1.dpad_up) {
