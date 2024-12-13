@@ -175,24 +175,16 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 }
             }
 
-            if (currentGamepad2.left_bumper && ! previousGamepad2.left_bumper){
-                poignettoggle = !poignettoggle;
-            }
-            if (poignettoggle){
-                poignet.setPosition(1);
-            } else{
+            if (gamepad1.left_trigger>0.1){
                 poignet.setPosition(0);
+            } else{
+                poignet.setPosition(1);
             }
 
-            if(gamepad1.right_trigger>0.1){
-                pince.setPosition(0.3);
-            }else{
-                pince.setPosition(0.6);
-            }
 
-           // if (currentGamepad1.right_trigger && !previousGamepad1.right_trigger){
-             //   pinceToggle = !pinceToggle;
-            //}
+            if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper){
+                pinceToggle = !pinceToggle;
+            }
 
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper){
                 intakeToggle = !intakeToggle;
@@ -280,7 +272,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     }
                 }
                 if (slidemotorright.getCurrentPosition() < -1950) {
-                if (gamepad1.left_bumper) {
+                if (gamepad1.right_trigger>0.1) {
                         bucket.setPosition(0.1);
                     } else {
                         bucket.setPosition(1);
