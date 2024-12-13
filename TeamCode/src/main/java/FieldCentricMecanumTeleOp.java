@@ -222,27 +222,28 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                         pinceArriere.setPosition(1);
                     }
 
+                    if (gamepad1.y){
+                        target = -2070;
+                    }
+
                     if (gamepad1.x) {
                         target = -1400;
                     }
 
-
                 if (gamepad1.dpad_down) {
                     pince.setPosition(0.6);
                     sleep(200);
-                    SlideR.setPosition(0.045);
-                    SliderL.setPosition(0.045);
+                    SlideR.setPosition(0.05);
+                    SliderL.setPosition(0.05);
                     telemetry.update();
                 } else {
                     if (gamepad1.dpad_up) {
                         if (slidemotorright.getCurrentPosition() > -200) {
-                            poignet.setPosition(1);
+                            pinceToggle = !pinceToggle;
                             sleep(300);
                             SlideR.setPosition(1);
                             SliderL.setPosition(1);
                             sleep(800);
-                            pince.setPosition(0.6);
-                            sleep(1000);
                             SlideR.setPosition(0.6);
                             SliderL.setPosition(0.6);
                             telemetry.update();
