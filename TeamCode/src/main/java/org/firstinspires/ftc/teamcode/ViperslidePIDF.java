@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 @Config
 @TeleOp
 public class ViperslidePIDF extends OpMode {
@@ -18,6 +20,7 @@ public class ViperslidePIDF extends OpMode {
     public static double f = -0.1;
 
     public static int target = 0;
+    public static int target1 = 0;
 
     private final double ticks_in_degree = 384.5 / 180.0;
 
@@ -31,48 +34,59 @@ public class ViperslidePIDF extends OpMode {
 
         slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
         slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
+        slidemotorright.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
     public void loop() {
         if (gamepad1.y) {
-            target = -2000;
+            target = 2000;
             controller.setPID(p, i, d);
             int slidePos = slidemotorright.getCurrentPosition();
+            int slidePos1 = slidemotorleft.getCurrentPosition();
             double pid = controller.calculate(slidePos, target);
+            double pid1 = controller.calculate(slidePos1, target1);
             double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+            double ff1 = Math.cos(Math.toRadians(target1/ticks_in_degree))*f;
 
             double power = pid + ff;
+            double power1 = pid1 +ff1;
+
 
             slidemotorright.setPower(power);
-            slidemotorleft.setPower(-power);
+            slidemotorleft.setPower(-power1);
             telemetry.addData("pos", slidePos);
             telemetry.addData("target", target);
             telemetry.update();
         } else {
             controller.setPID(p, i, d);
             int slidePos = slidemotorright.getCurrentPosition();
+            int slidePos1 = -slidemotorleft.getCurrentPosition();
             double pid = controller.calculate(slidePos, target);
+            double pid1 = controller.calculate(slidePos1, target1);
             double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+            double ff1 = Math.cos(Math.toRadians(target1/ticks_in_degree))*f;
 
             double power = pid + ff;
+            double power1 = pid1 +ff1;
 
             slidemotorright.setPower(power);
-            slidemotorleft.setPower(-power);
+            slidemotorleft.setPower(-power1);
             telemetry.addData("pos", slidePos);
             telemetry.addData("target", target);
+            telemetry.addData("target1", target1);
             telemetry.update();
 
             if (gamepad1.a){
-                target = -50;
+                target = 50;
             }
 
             if (gamepad1.x){
-                target = -900;
+                target = 900;
             }
 
             if (gamepad1.b){
-                target = -1400;
+                target = 1400;
             }
         }
     }

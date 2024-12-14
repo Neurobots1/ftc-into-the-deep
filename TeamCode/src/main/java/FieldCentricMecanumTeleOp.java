@@ -43,7 +43,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private Servo poignet;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode(){
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad currentGamepad2 = new Gamepad();
 
@@ -51,8 +51,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Gamepad previousGamepad2 = new Gamepad();
 
 
-        boolean intakeToggle = true;
-        boolean poignettoggle = true;
+        boolean intakeToggle = false;
+        //boolean poignettoggle = true;
         boolean pinceToggle = false;
 
         controller = new PIDController(p, i, d);
@@ -149,9 +149,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
             if (pinceToggle) {
                 pince.setPosition(0.3);
-                sleep(400);
-                SlideR.setPosition(0.35);
-                SliderL.setPosition(0.35);
                 telemetry.update();
             }else{
                 pince.setPosition(0.6);
@@ -198,6 +195,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             {
                     controller.setPID(p, i, d);
                     int slidePos = slidemotorright.getCurrentPosition();
+                    int slidePos1 = slidemotorleft.getCurrentPosition();
                     double pid = controller.calculate(slidePos, target);
                     double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
@@ -206,6 +204,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     slidemotorright.setPower(power);
                     slidemotorleft.setPower(-power);
                     telemetry.addData("pos", slidePos);
+                    telemetry.addData("pos1", slidePos1);
                     telemetry.addData("target", target);
                     telemetry.update();
 
@@ -219,11 +218,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
                     if (gamepad1.b) {
                         target = -900;
-                        pinceArriere.setPosition(1);
+                        intakeToggle =!intakeToggle;
                     }
 
                     if (gamepad1.x) {
-                        target = -1400;
+                        target = -1600;
                     }
 
                 if (gamepad1.dpad_down) {
@@ -235,13 +234,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 } else {
                     if (gamepad1.dpad_up) {
                         if (slidemotorright.getCurrentPosition() > -200) {
-                            pinceToggle = !pinceToggle;
-                            sleep(300);
                             SlideR.setPosition(1);
                             SliderL.setPosition(1);
-                            sleep(800);
-                            SlideR.setPosition(0.6);
-                            SliderL.setPosition(0.6);
                             telemetry.update();
                         } else {
                             SliderL.setPosition(0.6);
@@ -260,9 +254,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 } else {
                     bucket.setPosition(1);
                 }
-                //if (gamepad1.start){
-                    //slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-               // }
+
+                if (gamepad1.back){
+                    slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                }
+
 
 
             }
