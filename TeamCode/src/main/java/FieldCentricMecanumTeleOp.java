@@ -14,11 +14,14 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.SubMotor;
 
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private PIDController controller;
+    //private SubMotor subMotor =null ;
 
 
 
@@ -50,6 +53,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Gamepad previousGamepad1 = new Gamepad();
         Gamepad previousGamepad2 = new Gamepad();
 
+        //subMotor = new SubMotor();
+
 
         boolean intakeToggle = false;
         //boolean poignettoggle = true;
@@ -64,10 +69,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor leftFront = hardwareMap.dcMotor.get("leftFront");
+        DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class,"leftFront");
         DcMotor rightBack = hardwareMap.dcMotor.get("rightBack");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor leftBack = hardwareMap.dcMotor.get("leftBack");
+
 
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -102,7 +108,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         IMU imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.resetYaw();
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
@@ -206,6 +212,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     telemetry.addData("pos", slidePos);
                     telemetry.addData("pos1", slidePos1);
                     telemetry.addData("target", target);
+                    telemetry.addData("AmpR", slidemotorright.getCurrent(CurrentUnit.AMPS));
+                    telemetry.addData("AmpL", slidemotorleft.getCurrent(CurrentUnit.AMPS));
                     telemetry.update();
 
                     if (gamepad1.a) {
@@ -222,7 +230,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     }
 
                     if (gamepad1.x) {
-                        target = -1600;
+                        target = -1525;
                     }
 
                 if (gamepad1.dpad_down) {

@@ -56,6 +56,7 @@ public class ViperslidePIDF extends OpMode {
             slidemotorright.setPower(power);
             slidemotorleft.setPower(-power1);
             telemetry.addData("pos", slidePos);
+            telemetry.addData("pos1", slidePos1);
             telemetry.addData("target", target);
             telemetry.update();
         } else {
@@ -73,6 +74,7 @@ public class ViperslidePIDF extends OpMode {
             slidemotorright.setPower(power);
             slidemotorleft.setPower(-power1);
             telemetry.addData("pos", slidePos);
+            telemetry.addData("pos1", slidePos1);
             telemetry.addData("target", target);
             telemetry.addData("target1", target1);
             telemetry.update();
