@@ -58,6 +58,7 @@ public class ViperslidePIDF extends OpMode {
             telemetry.addData("pos", slidePos);
             telemetry.addData("pos1", slidePos1);
             telemetry.addData("target", target);
+            telemetry.addData("target1", target1);
             telemetry.update();
         } else {
             controller.setPID(p, i, d);
