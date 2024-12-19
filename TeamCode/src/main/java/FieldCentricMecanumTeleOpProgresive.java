@@ -144,8 +144,6 @@ public class FieldCentricMecanumTeleOpProgresive extends ViperslidePIDFBIS {
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
 
-
-
         }
     }
 

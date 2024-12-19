@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.SubMotor;
 
+
+//test faire marcher deux programe en meme temps
 public class ViperslidePIDFBIS {
 
     private PIDController controller;
@@ -23,6 +25,9 @@ public class ViperslidePIDFBIS {
     public static int target2 = 0;
 
     private final double ticks_in_degree = 384.5 / 180.0;
+
+
+
     public DcMotorEx slidemotorright;
     public DcMotorEx slidemotorleft;
 
