@@ -1,3 +1,5 @@
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.teamcode.SubMotor.target;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -20,7 +22,7 @@ import org.firstinspires.ftc.teamcode.SubMotor;
 
 
 @TeleOp
-public class FieldCentricMecanumTeleOpProgresive extends LinearOpMode {
+public class FieldCentricMecanumTeleOpProgresive extends ViperslidePIDFBIS {
 
     public DcMotorEx slidemotorright;
     public DcMotorEx slidemotorleft;
@@ -35,7 +37,7 @@ public class FieldCentricMecanumTeleOpProgresive extends LinearOpMode {
     private Servo bucket;
     private Servo pinceArriere;
     private Servo poignet;
-    private SubMotor subMotor =null;
+    private ViperslidePIDFBIS target2;
 
     public void runOpMode(){
 
@@ -49,7 +51,6 @@ public class FieldCentricMecanumTeleOpProgresive extends LinearOpMode {
         boolean intakeToggle = false;
         //boolean poignettoggle = true;
         boolean pinceToggle = false;
-
 
         slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
         slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
@@ -103,9 +104,7 @@ public class FieldCentricMecanumTeleOpProgresive extends LinearOpMode {
         imu.initialize(parameters);
 
 
-        waitForStart();
 
-        while (opModeIsActive()) {
 
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
@@ -149,6 +148,5 @@ public class FieldCentricMecanumTeleOpProgresive extends LinearOpMode {
 
         }
     }
-}
 
 
