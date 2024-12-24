@@ -66,20 +66,12 @@ public class ViperSlides extends OpMode {
             telemetry.update();
 
 
+            public static int top = 2950
 
-            if (gamepad1.y) {
-                target = 2950;
-            }
-            if (gamepad1.a){
-                target = 0;
-            }
+            public static int bottom = 0
 
-            if (gamepad1.x){
-                target = 900;
-            }
+            public static int click = 900
 
-            if (gamepad1.b){
-                target = 1400;
-            }
+            public static int specimen = 1400
         }
     }
