@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.SubDependensy;
+package org.firstinspires.ftc.teamcode.TeleOp.Subsystems;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.arcrobotics.ftclib.controller.PIDController;

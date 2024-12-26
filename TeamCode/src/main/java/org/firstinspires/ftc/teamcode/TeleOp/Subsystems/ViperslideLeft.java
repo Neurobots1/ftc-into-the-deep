@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp.SubDependensy;
+package org.firstinspires.ftc.teamcode.TeleOp.Subsystems;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config
 @TeleOp
-public class ViperslideRight extends OpMode {
+public class ViperslideLeft extends OpMode {
 
     private PIDController controller;
 
@@ -32,9 +32,11 @@ public class ViperslideRight extends OpMode {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        slidemotorright = hardwareMap.get(DcMotorEx.class, "slidemotorright");
-        slidemotorright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slidemotorright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        slidemotorleft = hardwareMap.get(DcMotorEx.class, "slidemotorleft");
+        slidemotorleft.setDirection(DcMotorSimple.Direction.REVERSE);
+        slidemotorleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidemotorleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 
@@ -42,14 +44,14 @@ public class ViperslideRight extends OpMode {
     public void loop() {
 
             controller.setPID(p, i, d);
-            int slidePosRight = slidemotorright.getCurrentPosition();
-            double pidRight = controller.calculate(slidePosRight, target);
+            int slidePosLeft = slidemotorleft.getCurrentPosition();
+            double pidLeft = controller.calculate(slidePosLeft, target);
             double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-            double powerRight = pidRight + ff;
+            double powerLeft = pidLeft + ff;
 
-            slidemotorleft.setPower(powerRight);
+            slidemotorleft.setPower(powerLeft);
 
-            telemetry.addData("posRight", slidePosRight);
+            telemetry.addData("posLeft", slidePosLeft);
             telemetry.addData("target", target);
             telemetry.update();
 

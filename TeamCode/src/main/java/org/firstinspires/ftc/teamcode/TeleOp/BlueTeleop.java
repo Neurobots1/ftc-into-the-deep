@@ -1,23 +1,24 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Subsystems;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.TeleOp.Subsystems.GamePieceDetection;
 
 @Config
 @TeleOp
-public class IteratifTeleop extends OpMode {
+public class BlueTeleop extends OpMode {
 
     // Viper Slide Variables
     private PIDController controller;
@@ -41,11 +42,16 @@ public class IteratifTeleop extends OpMode {
 
     // REV Touch Sensor (Limit Switch)
     private TouchSensor limitSwitch;  // Declare the touch sensor
+
+    private DcMotor intakemotor;
+    private ColorSensor colorSensor;
+    private GamePieceDetection gamePieceDetection;
     private boolean limitSwitchPreviouslyPressed = false;
 
     @Override
     public void init() {
-
+        // Initialize GamePieceDetection
+        gamePieceDetection = new GamePieceDetection(hardwareMap.get(ColorSensor.class, "colorSensor"));
 
         // Initialize Viper Slide
         controller = new PIDController(p, i, d);
@@ -87,12 +93,39 @@ public class IteratifTeleop extends OpMode {
 
         // Initialize REV Touch Sensor (Limit Switch)
         limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch"); // Assign the touch sensor
+
+        // Initialize motors and sensors
+        intakemotor = hardwareMap.get(DcMotor.class, "intakemotor");
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+
+        // Initialize GamePieceDetection
+        gamePieceDetection = new GamePieceDetection(colorSensor);
     }
 
     @Override
     public void loop() {
 
-        long startTime = System.nanoTime(); // Capture start time
+        // Update the game piece color detection
+        gamePieceDetection.detectColor();
+        String detectedColor = gamePieceDetection.getDetectedColor();
+
+        // Check if the detected color is the opponent's color (assuming the opponent's color is Red)
+        if (detectedColor.equals("Red")) {
+            // Opponent's color detected, outake immediately at 0.3 power
+            intakemotor.setPower(0.3);
+        } else {
+            // Check if left or right bumper is pressed for intake/outtake control
+            if (gamepad1.left_bumper) {
+                // Full intake power when left bumper is pressed
+                intakemotor.setPower(1.0);
+            } else if (gamepad1.right_bumper) {
+                // Outtake at 0.3 power when right bumper is pressed
+                intakemotor.setPower(-0.3);
+            } else {
+                // Stop motor if no bumpers are pressed
+                intakemotor.setPower(0);
+            }
+        }
 
         // Viper Slide Control (PID)
         controller.setPID(p, i, d);
@@ -201,11 +234,8 @@ public class IteratifTeleop extends OpMode {
         dashboard.getTelemetry().addData("Target Heading", headingSetpoint);
         dashboard.getTelemetry().addData("Heading Error", headingError);
 
-        // Measure and display the loop time
-        long endTime = System.nanoTime(); // Capture end time
-        long loopTime = endTime - startTime; // Calculate the loop duration
-        telemetry.addData("Loop Time (ms)", loopTime / 1000000.0); // Convert to milliseconds and display
-
         telemetry.update();
     }
+
+
 }
