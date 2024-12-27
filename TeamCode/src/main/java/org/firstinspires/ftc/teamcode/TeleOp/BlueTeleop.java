@@ -168,6 +168,7 @@ public class BlueTeleop extends OpMode {
             // Re-enable running without encoders after reset
             slidemotorleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             slidemotorright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            //tu devrai pas rajouter un offset apes que la limit swicht a été activer?
 
             telemetry.addData("Limit Switch", "Resetting encoders");
         }
