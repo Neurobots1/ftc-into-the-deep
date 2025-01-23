@@ -64,12 +64,12 @@ public class MecanumDrive {
 
         // drive model parameters
         public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
-        public double lateralInPerTick = inPerTick;
-        public double trackWidthTicks =  -6.058834369197061;
+        public double lateralInPerTick = 0.5778710012686864;
+        public double trackWidthTicks =  13.647715176024532;
 
         // feedforward parameters (in tick units)
-        public double kS = 1.3093762805139972;
-        public double kV = -0.28234375363522163;
+        public double kS = 1.8434220551310623;
+        public double kV = 0.11476316136827734;
         public double kA = 0.001;
 
         // path profile parameters (in inches)
@@ -218,8 +218,8 @@ public class MecanumDrive {
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
