@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.tuning.otos;
+package org.firstinspires.ftc.teamcode.RoadRunner.tuning.otos;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.SparkFunOTOSDrive;
 @TeleOp
 public class OTOSPositionOffsetTuner extends LinearOpMode {
 
@@ -14,7 +14,7 @@ public class OTOSPositionOffsetTuner extends LinearOpMode {
         telemetry.addLine("OTOS Position Offset Tuner");
         telemetry.addLine("Line the robot against the corner of two walls facing forward and Press START.");
         telemetry.addLine("Then rotate the robot exactly 180 degrees and press it back into the corner.");
-        telemetry.addLine("Finally, copy the pose offset into line 38 of SparkFunOTOSDrive.");
+        telemetry.addLine("Finally, copy the pose offset into line 42 of SparkFunOTOSDrive.");
         telemetry.update();
         waitForStart();
         while (opModeIsActive()) {
